@@ -3,3 +3,8 @@
 //invoice to send to customer
 
 //have a drag and drop feature
+import React from "react";
+
+export default function CreateInvoice({ signedIn, setSignedIn }) {
+  return <div>//Form for Invoice</div>;
+}

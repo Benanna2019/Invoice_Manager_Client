@@ -1,5 +1,4 @@
-//Confirm Sign up page where we will send user a code that will
-//then authenticate their credentials
+//Signup page where the user will create an account
 import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -14,9 +13,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Link as ReachRouterLink, navigate } from "@reach/router";
 import { Auth } from "aws-amplify";
-import { navigate } from "@reach/router";
-import axios from "axios";
 
 function Copyright() {
   return (
@@ -51,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ConfirmSignUp({ username, password, setSignedIn }) {
+export default function SignUp({ setUsername, setPassword }) {
   const classes = useStyles();
 
   return (
@@ -62,57 +60,54 @@ export default function ConfirmSignUp({ username, password, setSignedIn }) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Confirm Sign Up
+          Sign up
         </Typography>
-        <form
-          className={classes.form}
-          noValidate
-          //   onSubmit={(e) => {
-          //     e.preventDefault();
-          //     const code = e.target.elements.code.value;
-          //     (async function () {
-          //       try {
-          //         const resp = await Auth.confirmSignUp(username, code);
-          //         if (resp === 'SUCCESS') {
-          //           const currentUser = await Auth.signIn(username, password);
-          //           console.log(currentUser);
-          //           const idToken =
-          //             currentUser.signInUserSession.idToken.jwtToken;
-          //           console.log(idToken);
-          //           setSignedIn(currentUser);
-          //           //   navigate('/home');
-          //           // const  await Auth.currentAuthenticatedUser());
-          //           await axios
-          //             .post(
-          //               'https://adp34fqnm5.execute-api.us-east-1.amazonaws.com/dev/create-user',
-          //               {
-          //                 token: idToken,
-          //                 avatar: 'defaultAvatar/super-mario-run.jpg',
-          //               },
-          //             )
-          //             .then(() => {
-          //               setSignedIn(currentUser);
-          //               navigate('/home');
-          //             })
-          //             .catch((error) => console.log(error));
-          //         }
-          //       } catch (error) {
-          //         console.log('error confirming sign up', error);
-          //       }
-          //     })();
-          //   }}
-        >
+        <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="code"
-                name="code"
+                autoComplete="fname"
+                name="firstName"
                 variant="outlined"
                 required
                 fullWidth
-                id="code"
-                label="code"
+                id="firstName"
+                label="First Name"
                 autoFocus
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="lname"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
               />
             </Grid>
             <Grid item xs={12}>
@@ -129,8 +124,15 @@ export default function ConfirmSignUp({ username, password, setSignedIn }) {
             color="primary"
             className={classes.submit}
           >
-            Confirm
+            Sign Up
           </Button>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <ReachRouterLink to="/signin">
+                Already have an account? Sign in
+              </ReachRouterLink>
+            </Grid>
+          </Grid>
         </form>
       </div>
       <Box mt={5}>

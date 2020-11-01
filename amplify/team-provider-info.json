@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-invoicemanagerclient-dev-172937-authRole",
+      "UnauthRoleArn": "arn:aws:iam::327878786777:role/amplify-invoicemanagerclient-dev-172937-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::327878786777:role/amplify-invoicemanagerclient-dev-172937-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-invoicemanagerclient-dev-172937-deployment",
+      "UnauthRoleName": "amplify-invoicemanagerclient-dev-172937-unauthRole",
+      "StackName": "amplify-invoicemanagerclient-dev-172937",
+      "StackId": "arn:aws:cloudformation:us-east-1:327878786777:stack/amplify-invoicemanagerclient-dev-172937/30174cf0-1709-11eb-b1cf-0eadc6b18409",
+      "AmplifyAppId": "d3sycwmc1b2ink"
+    }
+  }
+}
