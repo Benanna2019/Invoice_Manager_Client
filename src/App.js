@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Auth } from "aws-amplify";
-import { PrivateRoutes, PublicRoutes } from "./components";
-import logo from "./logo.svg";
+import PrivateRoutes from "./components/PrivateRoutes";
+import PublicRoutes from "./components/PublicRoutes";
 import "./App.css";
+import { Auth } from "aws-amplify";
 
 function App() {
   const [signedIn, setSignedIn] = useState(undefined);
@@ -22,8 +22,13 @@ function App() {
 
   return (
     <div className="App">
-      <PrivateRoutes signedIn={signedIn} setSignedIn={setSignedIn} />
-      <PublicRoutes setSignedIn={setSignedIn} />
+      {signedIn ? (
+        <>
+          <PrivateRoutes signedIn={signedIn} setSignedIn={setSignedIn} />
+        </>
+      ) : (
+        <PublicRoutes setSignedIn={setSignedIn} />
+      )}
     </div>
   );
 }

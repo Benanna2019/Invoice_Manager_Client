@@ -1,0 +1,67 @@
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  margin: 0;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  padding: 3rem;
+  background-color: hsla(0, 0%, 0%, 0.219);
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+}
+
+.customer-name {
+  margin: 5px;
+}
+
+.company {
+  margin: 5px;
+}
+
+.address-street {
+  margin: 5px;
+}
+
+.city {
+  margin: 5px;
+}
+
+.state {
+  margin: 5px;
+}
+
+.zipcode {
+  margin-top: 30px;
+}
+
+input {
+  padding: 7px;
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  color: hsl(270, 1%, 47%);
+}
+
+input:focus {
+  border-color: hsl(100, 100%, 50%);
+  box-shadow: 0 0 5px 0 hsl(118, 100%, 70%);
+}

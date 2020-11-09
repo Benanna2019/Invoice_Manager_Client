@@ -10,6 +10,11 @@
       "StackName": "amplify-invoicemanagerclient-dev-172937",
       "StackId": "arn:aws:cloudformation:us-east-1:327878786777:stack/amplify-invoicemanagerclient-dev-172937/30174cf0-1709-11eb-b1cf-0eadc6b18409",
       "AmplifyAppId": "d3sycwmc1b2ink"
+    },
+    "categories": {
+      "auth": {
+        "invoicemanagerclient94496fc0": {}
+      }
     }
   }
 }

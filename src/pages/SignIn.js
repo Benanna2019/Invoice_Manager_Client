@@ -1,7 +1,7 @@
 //Once the user has signed up, this is where they will sign in
 //Style = Give it a rotating background, or solid background
 //Styles = Make the SignUp box Centered and see-through and light-darkmode
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -15,7 +15,8 @@ import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as ReachRouterLink, navigate } from "@reach/router";
+import { Link as ReachRouterLink } from "@reach/router";
+import { navigate } from "@reach/router";
 import { Auth } from "aws-amplify";
 //import photo of invoices for left-side background
 
@@ -66,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn({ setSignedIn }) {
+  // const [status, setStatus] = useState(undefined);
   const classes = useStyles();
 
   return (
@@ -80,16 +82,38 @@ export default function SignIn({ setSignedIn }) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={classes.form} noValidate>
+          <form
+            className={classes.form}
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+              const username = e.target.elements.username.value;
+              const password = e.target.elements.password.value;
+              (async function () {
+                try {
+                  const user = await Auth.signIn(username, password);
+                  console.log(user);
+                  console.log(user.signInUserSession.idToken.jwtToken);
+                  //   dispatch(setSignedIn(user));
+
+                  setSignedIn(user);
+                  navigate("/home");
+                } catch (error) {
+                  console.log(error);
+                  // setStatus({ message: "error sigining in", type: "error" });
+                }
+              })();
+            }}
+          >
             <TextField
               variant="outlined"
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -123,7 +147,7 @@ export default function SignIn({ setSignedIn }) {
                 </Link>
               </Grid>
               <Grid item>
-                <ReachRouterLink to="signup">
+                <ReachRouterLink to="/signup">
                   <Link href="#" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>

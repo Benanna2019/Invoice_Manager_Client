@@ -6,6 +6,10 @@
 //Main middle section will be a table with all invoices
 //Have a table for 'Jobs' that user has done and the invoice# connected to it
 import React from "react";
+import SideNav from "../components/SideNav";
+import StatsDisplay from "../components/StatsDisplay";
+import InvoiceTable from "../components/InvoiceTable";
+import "../styles/home.css";
 
 export default function Home({ signedIn, setSignedIn }) {
   //state for userinvoices
@@ -18,6 +22,14 @@ export default function Home({ signedIn, setSignedIn }) {
   // - table to display invoices in that format
   // - data for stats cards at top
   // - --(might need to be seperate components for each card since it is different data)
-
-  return <div>//Stats cards //side navbar //Map over DisplayInvoices</div>;
+  //Stats cards //side navbar //Map over DisplayInvoices
+  return (
+    <div className="dashboard-container">
+      <SideNav signedIn={signedIn} setSignedIn={setSignedIn} />
+      <div>
+        <StatsDisplay signedIn={signedIn} setSignedIn={setSignedIn} />
+        <InvoiceTable signedIn={signedIn} setSignedIn={setSignedIn} />
+      </div>
+    </div>
+  );
 }

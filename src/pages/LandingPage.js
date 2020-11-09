@@ -1,4 +1,5 @@
 import React from "react";
+import { navigate } from "@reach/router";
 
 export default function LandingPage() {
   return (
@@ -28,10 +29,10 @@ export default function LandingPage() {
         </div>
         <div className="landing-right">
           <div className="example-img-container">
-            <img src={Screenshot} alt="component image" />
+            <img src={""} alt="component image" />
           </div>
           <div className="example-code-container">
-            <img src={CodeSnip} alt="code snippet" />
+            <img src={""} alt="code snippet" />
           </div>
         </div>
 

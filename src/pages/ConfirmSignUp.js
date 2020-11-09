@@ -67,40 +67,36 @@ export default function ConfirmSignUp({ username, password, setSignedIn }) {
         <form
           className={classes.form}
           noValidate
-          //   onSubmit={(e) => {
-          //     e.preventDefault();
-          //     const code = e.target.elements.code.value;
-          //     (async function () {
-          //       try {
-          //         const resp = await Auth.confirmSignUp(username, code);
-          //         if (resp === 'SUCCESS') {
-          //           const currentUser = await Auth.signIn(username, password);
-          //           console.log(currentUser);
-          //           const idToken =
-          //             currentUser.signInUserSession.idToken.jwtToken;
-          //           console.log(idToken);
-          //           setSignedIn(currentUser);
-          //           //   navigate('/home');
-          //           // const  await Auth.currentAuthenticatedUser());
-          //           await axios
-          //             .post(
-          //               'https://adp34fqnm5.execute-api.us-east-1.amazonaws.com/dev/create-user',
-          //               {
-          //                 token: idToken,
-          //                 avatar: 'defaultAvatar/super-mario-run.jpg',
-          //               },
-          //             )
-          //             .then(() => {
-          //               setSignedIn(currentUser);
-          //               navigate('/home');
-          //             })
-          //             .catch((error) => console.log(error));
-          //         }
-          //       } catch (error) {
-          //         console.log('error confirming sign up', error);
-          //       }
-          //     })();
-          //   }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            const code = e.target.elements.code.value;
+            (async function () {
+              try {
+                const resp = await Auth.confirmSignUp(username, code);
+                if (resp === "SUCCESS") {
+                  const currentUser = await Auth.signIn(username, password);
+                  console.log(currentUser);
+                  const idToken =
+                    currentUser.signInUserSession.idToken.jwtToken;
+                  console.log(idToken);
+                  setSignedIn(currentUser);
+                  //   navigate('/home');
+                  // const  await Auth.currentAuthenticatedUser());
+                  await axios
+                    .post("http://localhost:4000/create-user", {
+                      token: idToken,
+                    })
+                    .then(() => {
+                      setSignedIn(currentUser);
+                      navigate("/home");
+                    })
+                    .catch((error) => console.log(error));
+                }
+              } catch (error) {
+                console.log("error confirming sign up", error);
+              }
+            })();
+          }}
         >
           <Grid container spacing={2}>
             <Grid item xs={12}>

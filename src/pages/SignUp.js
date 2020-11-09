@@ -62,29 +62,47 @@ export default function SignUp({ setUsername, setPassword }) {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form
+          className={classes.form}
+          noValidate
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log(e.target.elements.email);
+            console.log(e.target.elements);
+
+            const username = e.target.elements.username.value;
+            const password = e.target.elements.password.value;
+            const email = e.target.elements.email.value;
+            (async function () {
+              try {
+                const { user } = await Auth.signUp({
+                  username,
+                  password,
+                  attributes: {
+                    email, // optional
+                  },
+                });
+                console.log(user);
+                setUsername(username);
+                setPassword(password);
+                navigate("/confirm");
+              } catch (error) {
+                console.log(error);
+                // setStatus({ message: "Error Sigining Up", type: "error" });
+              }
+            })();
+          }}
+        >
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
               />
             </Grid>
             <Grid item xs={12}>
