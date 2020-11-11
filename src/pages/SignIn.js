@@ -92,8 +92,8 @@ export default function SignIn({ setSignedIn }) {
               (async function () {
                 try {
                   const user = await Auth.signIn(username, password);
-                  console.log(user);
-                  console.log(user.signInUserSession.idToken.jwtToken);
+                  // console.log(user);
+                  // console.log(user.signInUserSession.idToken.jwtToken);
                   //   dispatch(setSignedIn(user));
 
                   setSignedIn(user);

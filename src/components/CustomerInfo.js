@@ -3,6 +3,7 @@
 //Can have name, company and email
 import React from "react";
 import axios from "axios";
+import "../styles/customer-info.css";
 
 export default function CustomerInfo({ signedIn, setOpen }) {
   //axios post here to the database to store the customer information

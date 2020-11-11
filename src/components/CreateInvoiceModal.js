@@ -5,7 +5,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import CustomerInfo from "./CustomerInfo";
+import CreateInvoice from "./CreateInvoice";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomerUploadModal({ signedIn, setStatus }) {
+export default function CreateInvoiceModal({ signedIn, setStatus }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -41,7 +41,7 @@ export default function CustomerUploadModal({ signedIn, setStatus }) {
   return (
     <div>
       <ListItem button onClick={handleOpen}>
-        <ListItemText primary="Add Customer" />
+        <ListItemText primary="Create Invoice" />
       </ListItem>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -57,7 +57,7 @@ export default function CustomerUploadModal({ signedIn, setStatus }) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <CustomerInfo
+            <CreateInvoice
               signedIn={signedIn}
               setStatus={setStatus}
               setOpen={setOpen}

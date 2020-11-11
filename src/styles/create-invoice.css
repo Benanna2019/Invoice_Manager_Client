@@ -1,0 +1,78 @@
+.invoice-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  margin: 0;
+}
+
+.invoice-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 3rem;
+  background-color: hsla(0, 0%, 0%, 0.219);
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: start;
+  margin: 10px;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.invoice-add-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+select {
+  padding: 7px;
+  font-size: 1rem;
+  outline: none;
+  margin: 4px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  color: hsl(270, 1%, 47%);
+}
+
+select:focus {
+  border-color: hsl(100, 100%, 50%);
+  box-shadow: 0 0 5px 0 hsl(118, 100%, 70%);
+}
+
+input {
+  padding: 7px;
+  font-size: 1rem;
+  outline: none;
+  margin: 4px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  color: hsl(270, 1%, 47%);
+}
+
+input:focus {
+  border-color: hsl(100, 100%, 50%);
+  box-shadow: 0 0 5px 0 hsl(118, 100%, 70%);
+}
+
+.btn-submit {
+  outline: none;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 0.6em;
+  text-shadow: 1px 1px 1px black;
+}

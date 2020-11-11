@@ -18,6 +18,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import CustomerUploadModal from "./CustomerUploadModal";
+import CreateInvoiceModal from "./CreateInvoiceModal";
+import SignOut from "./SignOut";
 
 const drawerWidth = 240;
 
@@ -82,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SideNav({ signedIn, setSignedIn }) {
   const classes = useStyles();
   const theme = useTheme();
-  const [component, setComponent] = React.useState("customerupload");
+  // const [component, setComponent] = React.useState("customerupload");
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -93,13 +95,13 @@ export default function SideNav({ signedIn, setSignedIn }) {
     setOpen(false);
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  // };
 
   return (
     <div className={classes.root}>
@@ -145,17 +147,20 @@ export default function SideNav({ signedIn, setSignedIn }) {
         </div>
         <Divider />
         <List>
-          {/* {["Inbox", "Add Customer", "Create Invoice", "Data Display"].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )} */}
-          <ListItem button>
+          {[
+            "Inbox",
+            <CustomerUploadModal signedIn={signedIn} />,
+            <CreateInvoiceModal signedIn={signedIn} />,
+            "Data Display",
+          ].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+          {/* <ListItem button>
             <ListItemText primary="Inbox" />
           </ListItem>
           <ListItem button onClick={() => setComponent("customerupload")}>
@@ -168,26 +173,30 @@ export default function SideNav({ signedIn, setSignedIn }) {
             ) : (
               <></>
             )}
-          </ListItem>
+          </ListItem> 
           <ListItem button>
             <ListItemText primary="Create Invoice" />
+            <CreateInvoiceModal signedIn={signedIn} />
           </ListItem>
           <ListItem button>
             <ListItemText primary="Display Data" />
-          </ListItem>
+          </ListItem>*/}
         </List>
         <Divider />
         <List>
-          {["All Invoices", "Send Invoice", "Projects", "Sign Out"].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            )
-          )}
+          {[
+            "All Invoices",
+            "Send Invoice",
+            "Projects",
+            <SignOut setSignedIn={setSignedIn} />,
+          ].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
         </List>
       </Drawer>
       <main
