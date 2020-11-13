@@ -12,10 +12,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function BillTo() {
+export default function BillTo({ invoice }) {
+  // console.log(invoice);
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.billTo}>Bill To:</Text>
+      <Text>{invoice.customer}</Text>
       <Text>{invoice.company}</Text>
       <Text>{invoice.address}</Text>
       <Text>{invoice.phone}</Text>

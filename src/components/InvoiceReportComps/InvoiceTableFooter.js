@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function InvoiceTableFooter({ items }) {
-  const total = items
-    .map((item) => item.qty * item.rate)
+export default function InvoiceTableFooter({ orders }) {
+  const total = orders
+    .map((order) => order.qty * order.rate)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
   return (
     <View style={styles.row}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 
 const borderColor = "#90e5fc";
@@ -39,13 +39,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function InvoiceTableRow() {
-  const rows = items.map((item) => (
-    <View style={styles.row} key={item.sno.toString()}>
-      <Text style={styles.description}>{item.desc}</Text>
-      <Text style={styles.qty}>{item.qty}</Text>
-      <Text style={styles.rate}>{item.rate}</Text>
-      <Text style={styles.amount}>{(item.qty * item.rate).toFixed(2)}</Text>
+export default function InvoiceTableRow({ orders }) {
+  const rows = orders.map((order) => (
+    <View style={styles.row} key={order.sno.toString()}>
+      <Text style={styles.description}>{order.desc}</Text>
+      <Text style={styles.qty}>{order.qty}</Text>
+      <Text style={styles.rate}>{order.rate}</Text>
+      <Text style={styles.amount}>{(order.qty * order.rate).toFixed(2)}</Text>
     </View>
   ));
   return <Fragment>{rows}</Fragment>;

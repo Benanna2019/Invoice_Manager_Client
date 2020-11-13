@@ -1,53 +1,109 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Invoice from "./Invoice";
 
-export default function InvoiceData({signedIn}) {
-    //axios get invoice information 
-    const invoice = {
-        "id": `${data.id}`,
-        "balance": `${data.balance}`,
-        "company": `${}`,
-        "email": `${}`,
-        "phone": `${}`,
-        "address": `${}`,
-        "trans_date": `${}`,
-        "due_date": `${}`,
-        "orders": [
-          {
-            "sno": 1,
-            "desc": "ad sunt culpa occaecat qui",
-            "qty": 5,
-            "rate": 405.89
-          },
-          {
-            "sno": 2,
-            "desc": "cillum quis sunt qui aute",
-            "qty": 5,
-            "rate": 373.11
-          },
-          {
-            "sno": 3,
-            "desc": "ea commodo labore culpa irure",
-            "qty": 5,
-            "rate": 458.61
-          },
-          {
-            "sno": 4,
-            "desc": "nisi consequat et adipisicing dolor",
-            "qty": 10,
-            "rate": 725.24
-          },
-          {
-            "sno": 5,
-            "desc": "proident cillum anim elit esse",
-            "qty": 4,
-            "rate": 141.02
-          }
-        ]
+export default function InvoiceData({ signedIn, invoiceUuId, clientId }) {
+  const [userInfo, setUserInfo] = useState(undefined);
+
+  // const [] = useState(undefined);
+  //axios get invoice information
+  // on the server side this will need to be a joined query
+  //or multiple queries that display
+  //User info, for 'Remit To:'
+  //Customer info for 'Bill To:' Change Foreign Key on Invoices Table
+  //to get customer ID - that way a JOIN can be done for Customer info
+  //ON customer_id
+  //Invoice and Order information JOIN on server side on invoice_uuid
+  //get invoice customer - Join invoice and customer on Bill To
+  // and return customer info where customer_name
+  useEffect(() => {
+    (async function () {
+      try {
+        const token = signedIn.signInUserSession.idToken.jwtToken;
+        const response = await axios.post("http://localhost:4000/user", {
+          token,
+        });
+        setUserInfo(response.data);
+        // console.log("this is the response", response);
+        // console.log('current user log', currentUser);
+      } catch (error) {
+        console.log(error);
       }
+    })();
+  }, []);
 
-    return (
-        <div>
-            
-        </div>
-    )
+  const [invoiceInfo, setInvoiceInfo] = useState(undefined);
+  useEffect(() => {
+    (async function () {
+      // gets customer address
+      try {
+        const currentUuid = invoiceUuId;
+        const currentInvoice = await axios.post(
+          "http://localhost:4000/get-invoice-info",
+          {
+            currentUuid,
+            token: signedIn.signInUserSession.idToken.jwtToken,
+          }
+        );
+        setInvoiceInfo(currentInvoice.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  const [orderInfo, setOrderInfo] = useState(undefined);
+  useEffect(() => {
+    (async function () {
+      // gets customer address
+      try {
+        const orderUuid = invoiceUuId;
+        const response = await axios.post(
+          "http://localhost:4000/get-order-info",
+          {
+            orderUuid,
+            token: signedIn.signInUserSession.idToken.jwtToken,
+          }
+        );
+        setOrderInfo(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  const [customerInfo, setCustomerInfo] = useState(undefined);
+  useEffect(() => {
+    (async function () {
+      // gets customer address
+      try {
+        const currentCustomer = clientId;
+        // console.log(currentCustomer);
+        const response = await axios.post(
+          "http://localhost:4000/get-customer-info",
+          {
+            currentCustomer,
+            token: signedIn.signInUserSession.idToken.jwtToken,
+          }
+        );
+        setCustomerInfo(response.data);
+        // console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
+  return (
+    <div>
+      {userInfo && customerInfo && invoiceInfo && orderInfo && (
+        <Invoice
+          userInfo={userInfo}
+          customerInfo={customerInfo}
+          invoiceInfo={invoiceInfo}
+          orderInfo={orderInfo}
+        />
+      )}
+    </div>
+  );
 }

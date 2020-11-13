@@ -13,9 +13,9 @@
   /* justify-content: center; */
   align-items: center;
   padding: 3rem;
-  background-color: hsla(0, 0%, 0%, 0.219);
-  color: white;
-  border: 1px solid black;
+  /* background-color: white; */
+  color: black;
+  /* border: 1px solid black; */
   border-radius: 5px;
 }
 
@@ -56,9 +56,11 @@ input {
   padding: 7px;
   font-size: 1rem;
   outline: none;
-  border: 1px solid lightgray;
-  border-radius: 4px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
   color: hsl(270, 1%, 47%);
+  /* color: hsl(270, 1%, 47%); */
 }
 
 input:focus {

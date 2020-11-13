@@ -1,16 +1,16 @@
-.invoice-container {
+.modal-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 85vh;
+  min-height: 75vh;
   margin: 0;
 }
 
-.invoice-content {
+.modal-content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  /* justify-content: center; */
   align-items: center;
   padding: 3rem;
   /* background-color: hsla(0, 0%, 0%, 0.219); */
@@ -22,38 +22,44 @@
 .form-content {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  text-align: start;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   margin: 10px;
 }
 
-.header-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+.first-name {
+  margin: 5px;
 }
 
-.invoice-add-items {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+.last-name {
+  margin: 5px;
 }
 
-select {
-  padding: 7px;
-  font-size: 1rem;
-  outline: none;
-  margin: 4px;
-  border: 1px solid lightgray;
-  border-radius: 4px;
-  color: hsl(270, 1%, 47%);
+.company {
+  margin: 5px;
+}
+
+.address-street {
+  margin: 5px;
+}
+
+.city {
+  margin: 5px;
+}
+
+.state {
+  margin: 5px;
+}
+
+.zipcode {
+  margin-top: 30px;
 }
 
 input {
   padding: 7px;
   font-size: 1rem;
   outline: none;
-  margin: 4px;
   border: none;
   background: transparent;
   border-bottom: 1px solid #000000;
@@ -63,13 +69,4 @@ input {
 input:focus {
   border-color: hsl(100, 100%, 50%);
   box-shadow: 0 0 5px 0 hsl(118, 100%, 70%);
-}
-
-.btn-submit {
-  outline: none;
-  color: white;
-  padding: 0.5em 1em;
-  background: transparent;
-  border-radius: 0.6em;
-  text-shadow: 1px 1px 1px black;
 }

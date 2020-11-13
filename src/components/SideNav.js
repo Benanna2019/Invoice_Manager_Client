@@ -19,6 +19,9 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import CustomerUploadModal from "./CustomerUploadModal";
 import CreateInvoiceModal from "./CreateInvoiceModal";
+import UpdateUserModal from "./UpdateUserModal";
+import StatsDisplay from "./StatsDisplay";
+import InvoiceTable from "./InvoiceTable";
 import SignOut from "./SignOut";
 
 const drawerWidth = 240;
@@ -28,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   appBar: {
-    backgroundColor: "#f44336",
+    backgroundColor: "#ed8224",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -62,6 +65,13 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: "flex-end",
+  },
+  dataDisplay: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "20px",
   },
   content: {
     flexGrow: 1,
@@ -148,7 +158,7 @@ export default function SideNav({ signedIn, setSignedIn }) {
         <Divider />
         <List>
           {[
-            "Inbox",
+            <UpdateUserModal signedIn={signedIn} />,
             <CustomerUploadModal signedIn={signedIn} />,
             <CreateInvoiceModal signedIn={signedIn} />,
             "Data Display",
@@ -204,8 +214,14 @@ export default function SideNav({ signedIn, setSignedIn }) {
           [classes.contentShift]: open,
         })}
       >
+        <StatsDisplay signedIn={signedIn} setSignedIn={setSignedIn} />
+        <InvoiceTable signedIn={signedIn} setSignedIn={setSignedIn} />
         <div className={classes.drawerHeader} />
       </main>
+      {/* <div className={classes.dataDisplay}>
+        <StatsDisplay signedIn={signedIn} setSignedIn={setSignedIn} />
+        <InvoiceTable signedIn={signedIn} setSignedIn={setSignedIn} />
+      </div> */}
     </div>
   );
 }

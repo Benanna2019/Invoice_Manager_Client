@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
 export default function InvoiceRemitToInfo({ invoice }) {
   return (
     <View style={styles.remitToContainer}>
-      <Text style={styles.remitTo}>Bill To:</Text>
-      <Text>{invoice.userName}</Text>
-      <Text>{invoice.userAddress}</Text>
+      <Text style={styles.remitTo}>Remit To:</Text>
+      <Text>{invoice.remitTo}</Text>
+      {/* <Text>{invoice.userAddress}</Text>
       <Text>{invoice.userPhone}</Text>
-      <Text>{invoice.userEmail}</Text>
+      <Text>{invoice.userEmail}</Text> */}
     </View>
   );
 }

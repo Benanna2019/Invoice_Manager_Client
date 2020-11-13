@@ -5,7 +5,7 @@ import InvoiceTableRow from "./InvoiceTableRow";
 import InvoiceTableBlankSpace from "./InvoiceTableBlankSpace";
 import InvoiceTableFooter from "./InvoiceTableFooter";
 
-const tableRowsCount = 11;
+const tableRowsCount = 7;
 
 const styles = StyleSheet.create({
   tableContainer: {
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function InvoiceOrdersTable() {
+export default function InvoiceOrdersTable({ invoice }) {
   return (
     <View style={styles.tableContainer}>
       <InvoiceTableHeader />

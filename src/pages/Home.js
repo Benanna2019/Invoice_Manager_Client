@@ -25,10 +25,8 @@ export default function Home({ signedIn, setSignedIn }) {
   //Stats cards //side navbar //Map over DisplayInvoices
   return (
     <div className="dashboard-container">
-      <SideNav signedIn={signedIn} setSignedIn={setSignedIn} />
       <div>
-        <StatsDisplay signedIn={signedIn} setSignedIn={setSignedIn} />
-        <InvoiceTable signedIn={signedIn} setSignedIn={setSignedIn} />
+        <SideNav signedIn={signedIn} setSignedIn={setSignedIn} />
       </div>
     </div>
   );

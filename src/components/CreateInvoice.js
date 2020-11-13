@@ -6,12 +6,20 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import uuid from "uuid/dist/v4";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
+import InvoiceRenderer from "./InvoiceRenderer";
+import InvoiceData from "../data/InvoiceData";
 import "../styles/create-invoice.css";
 
 export default function CreateInvoice({ signedIn, setSignedIn }) {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [userClients, setUserClients] = useState(undefined);
+  const [invoiceUuId, setInvoiceUuId] = useState(undefined);
+  const [clientId, setClientId] = useState(undefined);
   const [orders, setOrders] = useState([{}, {}, {}, {}, {}]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     (async function () {
@@ -77,6 +85,11 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
 
       const invoiceUuid = uuid();
       const billTo = e.target.elements.billTo.value;
+      console.log(billTo);
+      setClientId(billTo);
+      setInvoiceUuId(invoiceUuid);
+
+      // setInvoiceUuid(invoiceUuid);
       // const quantity = e.target.elements.quantity.value;
       // const itemDescription = e.target.elements.itemDescription.value;
       // const cost = e.target.elements.cost.value;
@@ -106,8 +119,10 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
             )
               .then((resp) => {
                 window.alert("order created");
+                setIsSubmitted(true);
               })
               .catch((error) => {
+                console.log("This is the", error);
                 window.alert("There is an error", error);
               });
 
@@ -124,11 +139,27 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
   }
   console.log(orders);
 
+  if (isSubmitted) {
+    return (
+      <>
+        {signedIn && invoiceUuId && clientId && (
+          <ListItem button>
+            <InvoiceData
+              signedIn={signedIn}
+              invoiceUuId={invoiceUuId}
+              clientId={clientId}
+            />
+            <ListItemText primary="Generate Invoice" />
+          </ListItem>
+        )}
+      </>
+    );
+  }
   return (
     <form className="invoice-container" onSubmit={(e) => addInvoice(e)}>
       <div className="invoice-content">
         <div className="form-content">
-          <h2>New Invoice</h2>
+          <h2>New Order</h2>
 
           <div className="header-info">
             {/* <input
@@ -137,7 +168,8 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
               // defaultValue={(date) => getDate(date)}
             /> */}
             {/* A Simple Date.now() with some logic to change Date format */}
-            <select defaultValue="Select Customer" id="billTo">
+            <select id="billTo">
+              Select Customer
               {userClients &&
                 userClients.map((client) => (
                   <option value={client.id}>{client.customer_name}</option>
@@ -166,9 +198,16 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
             </div>
           ))}
         </div>
-        <button className="btn-submit" type="submit">
-          Create Invoice
-        </button>
+        <div>
+          <Button type="submit">
+            <ListItem button>
+              <ListItemText primary="Create Invoice" />
+            </ListItem>
+          </Button>
+          {/* <ListItem>
+            <InvoiceRenderer />
+          </ListItem> */}
+        </div>
       </div>
     </form>
   );

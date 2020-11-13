@@ -1,9 +1,12 @@
 import React from "react";
 import { Page, Document, Image, StyleSheet } from "@react-pdf/renderer";
+import ReactPDF from "@react-pdf/renderer";
 import InvoiceTitle from "./InvoiceTitle";
 import BillTo from "./BillTo";
-import InvoiceItemsTable from "./InvoiceItemsTable";
+import InvoiceOrdersTable from "./InvoiceOrdersTable";
 import InvoiceThankYouMsg from "./InvoiceThankYouMsg";
+import InvoiceRemitToInfo from "./InvoiceRemitToInfo";
+
 // import logo from "../../../src/logo.png";
 
 const styles = StyleSheet.create({
@@ -25,16 +28,33 @@ const styles = StyleSheet.create({
 });
 
 export default function Invoice({ invoice }) {
+  // console.log(invoice);
+  // ReactPDF(
+  //   <Document>
+  //     <Page size="A4" style={styles.page}>
+  //       <InvoiceTitle title="Invoice" />
+  //       <BillTo invoice={invoice} />
+  //       <InvoiceOrdersTable invoice={invoice} />
+  //       <InvoiceRemitToInfo invoice={invoice} />
+  //       <InvoiceThankYouMsg />
+  //     </Page>
+  //   </Document>,
+  //   `${__dirname}/example.pdf`
+  // );
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         {/* <Image style={styles.logo} src={logo} /> */}
         <InvoiceTitle title="Invoice" />
         <BillTo invoice={invoice} />
-        <InvoiceItemsTable invoice={invoice} />
+        <InvoiceOrdersTable invoice={invoice} />
         <InvoiceRemitToInfo invoice={invoice} />
         <InvoiceThankYouMsg />
       </Page>
     </Document>
   );
+}
+
+{
+  /* <Image style={styles.logo} src={logo} /> */
 }
