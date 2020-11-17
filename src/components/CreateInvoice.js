@@ -13,13 +13,19 @@ import InvoiceRenderer from "./InvoiceRenderer";
 import InvoiceData from "../data/InvoiceData";
 import "../styles/create-invoice.css";
 
-export default function CreateInvoice({ signedIn, setSignedIn }) {
+export default function CreateInvoice({
+  signedIn,
+  setSignedIn,
+  refresh,
+  setRefresh,
+}) {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [userClients, setUserClients] = useState(undefined);
   const [invoiceUuId, setInvoiceUuId] = useState(undefined);
   const [clientId, setClientId] = useState(undefined);
   const [orders, setOrders] = useState([{}, {}, {}, {}, {}]);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  // const [required, setRequired] = useState(false);
 
   useEffect(() => {
     (async function () {
@@ -60,6 +66,8 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
         if (index === orderIndex) {
           return { ...order, [key]: e.target.value };
         }
+        // if (orderIndex === 0) [
+        // ]
         return order;
       })
     );
@@ -85,6 +93,7 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
 
       const invoiceUuid = uuid();
       const billTo = e.target.elements.billTo.value;
+      const orderDescription = e.target.elements.orderDescription.value;
       console.log(billTo);
       setClientId(billTo);
       setInvoiceUuId(invoiceUuid);
@@ -98,6 +107,7 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
         .post("http://localhost:4000/create-invoice", {
           invoiceUuid,
           billTo,
+          orderDescription,
           token: signedIn.signInUserSession.idToken.jwtToken,
         })
         .then((invoiceResp) => {
@@ -120,6 +130,7 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
               .then((resp) => {
                 window.alert("order created");
                 setIsSubmitted(true);
+                setRefresh(!refresh);
               })
               .catch((error) => {
                 console.log("This is the", error);
@@ -175,6 +186,13 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
                   <option value={client.id}>{client.customer_name}</option>
                 ))}
             </select>
+            <div className="order-summary">
+              <input
+                placeholder="Order Summary"
+                required
+                id="orderDescription"
+              />
+            </div>
           </div>
           {/* Bill To Can be a search that references a customer's address  */}
 
@@ -183,6 +201,7 @@ export default function CreateInvoice({ signedIn, setSignedIn }) {
               <input
                 placeholder="Item Description"
                 id={`orderDescription${orderIndex}`}
+                // {...(orderIndex == 0 ? "required" : "")}
                 onChange={(e) => onRowChange(e, "itemDescription", orderIndex)}
               />
               <input

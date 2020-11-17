@@ -21,7 +21,8 @@ import CustomerUploadModal from "./CustomerUploadModal";
 import CreateInvoiceModal from "./CreateInvoiceModal";
 import UpdateUserModal from "./UpdateUserModal";
 import StatsDisplay from "./StatsDisplay";
-import InvoiceTable from "./InvoiceTable";
+// import InvoiceTable from "./InvoiceTable";
+import InvoiceTableData from "./InvoiceTableData";
 import SignOut from "./SignOut";
 
 const drawerWidth = 240;
@@ -96,6 +97,7 @@ export default function SideNav({ signedIn, setSignedIn }) {
   const theme = useTheme();
   // const [component, setComponent] = React.useState("customerupload");
   const [open, setOpen] = React.useState(false);
+  const [refresh, setRefresh] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -158,9 +160,21 @@ export default function SideNav({ signedIn, setSignedIn }) {
         <Divider />
         <List>
           {[
-            <UpdateUserModal signedIn={signedIn} />,
-            <CustomerUploadModal signedIn={signedIn} />,
-            <CreateInvoiceModal signedIn={signedIn} />,
+            <UpdateUserModal
+              signedIn={signedIn}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />,
+            <CustomerUploadModal
+              signedIn={signedIn}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />,
+            <CreateInvoiceModal
+              signedIn={signedIn}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />,
             "Data Display",
           ].map((text, index) => (
             <ListItem button key={text}>
@@ -214,8 +228,20 @@ export default function SideNav({ signedIn, setSignedIn }) {
           [classes.contentShift]: open,
         })}
       >
-        <StatsDisplay signedIn={signedIn} setSignedIn={setSignedIn} />
-        <InvoiceTable signedIn={signedIn} setSignedIn={setSignedIn} />
+        <div>
+          <StatsDisplay
+            signedIn={signedIn}
+            setSignedIn={setSignedIn}
+            refresh={refresh}
+          />
+          <InvoiceTableData
+            signedIn={signedIn}
+            setSignedIn={setSignedIn}
+            refresh={refresh}
+            setRefresh={setRefresh}
+          />
+        </div>
+
         <div className={classes.drawerHeader} />
       </main>
       {/* <div className={classes.dataDisplay}>

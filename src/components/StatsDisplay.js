@@ -6,11 +6,11 @@ import Paper from "@material-ui/core/Paper";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    flexWrap: "wrap",
+    flexWrap: "nowrap",
     "& > *": {
       margin: theme.spacing(8),
-      width: theme.spacing(22),
-      height: theme.spacing(22),
+      width: theme.spacing(20),
+      height: theme.spacing(20),
     },
   },
   content: {
@@ -25,27 +25,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function StatsDisplay({ signedIn, setSignedIn }) {
+export default function StatsDisplay({ signedIn, setSignedIn, refresh }) {
   const [currentUser, setCurrentUser] = useState(undefined);
   const [clientCount, setClientCount] = useState([]);
   const [invoiceCount, setInvoiceCount] = useState([]);
   const [servicesProvided, setServicesProvided] = useState(undefined);
-  const [orderData, setOrderData] = useState(undefined);
+  const [popularCustomer, setPopularCustomer] = useState(undefined);
 
   const classes = useStyles();
 
-  function nFormatter(num) {
-    if (num >= 1000000000) {
-      return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
-    }
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
-    }
-    return num;
-  }
+  // function nFormatter(num) {
+  //   if (num >= 1000000000) {
+  //     return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "G";
+  //   }
+  //   if (num >= 1000000) {
+  //     return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  //   }
+  //   if (num >= 1000) {
+  //     return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+  //   }
+  //   return num;
+  // }
 
   useEffect(() => {
     (async function () {
@@ -61,11 +61,12 @@ export default function StatsDisplay({ signedIn, setSignedIn }) {
         customerCount(token);
         invoiceCnt(token);
         moneyMade(token);
+        popClient(token);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, []);
+  }, [refresh]);
 
   async function customerCount(token) {
     // gets customer address
@@ -77,7 +78,7 @@ export default function StatsDisplay({ signedIn, setSignedIn }) {
     let result = count.data[0][0].TotalCustomers;
     // let finalResult = JSON.parse(result);
     // let value = finalResult[0][0].TotalCustomers;
-    console.log(result);
+    // console.log(result);
     // console.log(finalResult);
     // console.log(value);
     setClientCount(result);
@@ -93,7 +94,7 @@ export default function StatsDisplay({ signedIn, setSignedIn }) {
     let result = count.data[0][0].TotalInvoices;
     // let finalResult = JSON.parse(result);
     // let value = finalResult[0][0].TotalCustomers;
-    console.log(result);
+    // console.log(result);
     // console.log(finalResult);
     // console.log(value);
     setInvoiceCount(result);
@@ -113,7 +114,23 @@ export default function StatsDisplay({ signedIn, setSignedIn }) {
     // console.log(finalResult);
     // console.log(value);
     setServicesProvided(result);
+    // console.log(result);
+  }
+
+  async function popClient(token) {
+    // gets customer address
+
+    let response = await axios.post("http://localhost:4000/popular-customer", {
+      token: signedIn.signInUserSession.idToken.jwtToken,
+    });
+
+    let result = response.data[0][0].bill_to;
+    // let finalResult = JSON.parse(result);
+    // let value = finalResult[0][0].TotalCustomers;
     console.log(result);
+    // console.log(finalResult);
+    // console.log(value);
+    setPopularCustomer(result);
   }
 
   return (
@@ -133,10 +150,17 @@ export default function StatsDisplay({ signedIn, setSignedIn }) {
       <Paper elevation={3} className={classes.content}>
         <h4>Services Provided</h4>
         <div>
-          <div className={classes.custct}>${servicesProvided}</div>
+          <div>
+            <div className={classes.custct}>${servicesProvided}</div>
+          </div>
         </div>
       </Paper>
-      <Paper elevation={3} />
+      <Paper elevation={3} className={classes.content}>
+        <h4>Most Frequent Client</h4>
+        <div>
+          <div className={classes.custct}>{popularCustomer}</div>
+        </div>
+      </Paper>
     </div>
   );
 }

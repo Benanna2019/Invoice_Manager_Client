@@ -1,5 +1,7 @@
 import React from "react";
 import { navigate } from "@reach/router";
+import "../styles/landing-page.css";
+// import Logo from "../images/logo.png";
 
 export default function LandingPage() {
   return (

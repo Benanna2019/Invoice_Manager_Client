@@ -16,10 +16,10 @@ export default function InvoiceRemitToInfo({ invoice }) {
   return (
     <View style={styles.remitToContainer}>
       <Text style={styles.remitTo}>Remit To:</Text>
-      <Text>{invoice.remitTo}</Text>
-      {/* <Text>{invoice.userAddress}</Text>
-      <Text>{invoice.userPhone}</Text>
-      <Text>{invoice.userEmail}</Text> */}
+      <Text>{invoice.remitToUser}</Text>
+      <Text>{invoice.remitToUserStreet}</Text>
+      <Text>{invoice.remitToUserAddress}</Text>
+      {/* <Text>{invoice.userEmail}</Text> */}
     </View>
   );
 }

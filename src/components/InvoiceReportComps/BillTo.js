@@ -20,7 +20,6 @@ export default function BillTo({ invoice }) {
       <Text>{invoice.customer}</Text>
       <Text>{invoice.company}</Text>
       <Text>{invoice.address}</Text>
-      <Text>{invoice.phone}</Text>
       <Text>{invoice.email}</Text>
     </View>
   );

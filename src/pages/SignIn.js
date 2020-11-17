@@ -18,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link as ReachRouterLink } from "@reach/router";
 import { navigate } from "@reach/router";
 import { Auth } from "aws-amplify";
+import Logo from "../images/logo.png";
 //import photo of invoices for left-side background
 
 function Copyright() {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     height: "100vh",
   },
   image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
+    backgroundImage: `url(${Logo})`,
     backgroundRepeat: "no-repeat",
     backgroundColor:
       theme.palette.type === "light"

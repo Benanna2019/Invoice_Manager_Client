@@ -26,7 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CustomerUploadModal({ signedIn, setStatus }) {
+export default function CustomerUploadModal({
+  signedIn,
+  setStatus,
+  refresh,
+  setRefresh,
+}) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -61,6 +66,8 @@ export default function CustomerUploadModal({ signedIn, setStatus }) {
               signedIn={signedIn}
               setStatus={setStatus}
               setOpen={setOpen}
+              refresh={refresh}
+              setRefresh={setRefresh}
             />
           </div>
         </Fade>

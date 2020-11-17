@@ -6,8 +6,7 @@ import BillTo from "./BillTo";
 import InvoiceOrdersTable from "./InvoiceOrdersTable";
 import InvoiceThankYouMsg from "./InvoiceThankYouMsg";
 import InvoiceRemitToInfo from "./InvoiceRemitToInfo";
-
-// import logo from "../../../src/logo.png";
+import logo from "../../images/pinterest_board_photo.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -19,12 +18,12 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
     flexDirection: "column",
   },
-  //   logo: {
-  //     width: 74,
-  //     height: 66,
-  //     marginLeft: "auto",
-  //     marginRight: "auto",
-  //   },
+  logo: {
+    width: 74,
+    height: 66,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
 });
 
 export default function Invoice({ invoice }) {
@@ -44,7 +43,7 @@ export default function Invoice({ invoice }) {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* <Image style={styles.logo} src={logo} /> */}
+        <Image style={styles.logo} src={logo} />
         <InvoiceTitle title="Invoice" />
         <BillTo invoice={invoice} />
         <InvoiceOrdersTable invoice={invoice} />
@@ -53,8 +52,4 @@ export default function Invoice({ invoice }) {
       </Page>
     </Document>
   );
-}
-
-{
-  /* <Image style={styles.logo} src={logo} /> */
 }

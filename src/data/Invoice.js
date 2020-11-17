@@ -2,7 +2,10 @@ import React from "react";
 import InvoiceRenderer from "../components/InvoiceRenderer";
 import InvoiceTable from "../components/InvoiceTable";
 
+//storage in this file
+//Add the storage functionality to this Component
 export default function Invoice({
+  signedIn,
   userInfo,
   customerInfo,
   invoiceInfo,
@@ -17,7 +20,6 @@ export default function Invoice({
     customer: `${customerInfo.customer_name}`,
     company: `${customerInfo.company}`,
     email: `${customerInfo.email}`,
-    phone: `${customerInfo.phone}`,
     address: `${customerInfo.address_street}, ${customerInfo.address_city}, ${customerInfo.address_state}, ${customerInfo.address_zip}`,
     orders: orderInfo.map((order) => {
       return {
@@ -59,13 +61,19 @@ export default function Invoice({
     //     rate: 141.02,
     //   },
     // ],
-    remitTo: `${userInfo.first_name}, ${userInfo.last_name} ${userInfo.address_street}, ${userInfo.address_city}, ${userInfo.state}, ${userInfo.address_zip}`,
+    remitToUser: `${userInfo.first_name} ${userInfo.last_name}`,
+    remitToUserStreet: `${userInfo.address_street}`,
+    remitToUserAddress: `${userInfo.address_city}, ${userInfo.state} ${userInfo.address_zip}`,
   };
   // console.log(invoice);
   return (
     <div>
-      <InvoiceTable invoice={invoice} />
-      <InvoiceRenderer invoice={invoice} />{" "}
+      <InvoiceRenderer
+        invoice={invoice}
+        signedIn={signedIn}
+        customerInfo={customerInfo}
+        invoiceInfo={invoiceInfo}
+      />{" "}
     </div>
   );
 }

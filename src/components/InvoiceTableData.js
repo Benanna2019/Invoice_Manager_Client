@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { lighten, makeStyles } from "@material-ui/core/styles";
@@ -7,40 +7,22 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import TablePagination from "@material-ui/core/TablePagination";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import Switch from "@material-ui/core/Switch";
+import Paper from "@material-ui/core/Paper";
 import axios from "axios";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Donut", 452, 25.0, 51, 4.9),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-  createData("Honeycomb", 408, 3.2, 87, 6.5),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Jelly Bean", 375, 0.0, 94, 0.0),
-  createData("KitKat", 518, 26.0, 65, 7.0),
-  createData("Lollipop", 392, 0.2, 98, 0.0),
-  createData("Marshmallow", 318, 0, 81, 2.0),
-  createData("Nougat", 360, 19.0, 9, 37.0),
-  createData("Oreo", 437, 18.0, 63, 4.0),
-];
+import * as d3 from "d3";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -73,30 +55,19 @@ const headCells = [
     id: "name",
     numeric: false,
     disablePadding: true,
-    label: "Dessert (100g serving)",
+    label: "Invoice #",
   },
-  { id: "calories", numeric: true, disablePadding: false, label: "Calories" },
-  { id: "fat", numeric: true, disablePadding: false, label: "Fat (g)" },
-  { id: "carbs", numeric: true, disablePadding: false, label: "Carbs (g)" },
-  { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" },
+  { id: "customer", numeric: true, disablePadding: false, label: "Client" },
+  { id: "date", numeric: true, disablePadding: false, label: "Invoice Date" },
+  {
+    id: "description",
+    numeric: true,
+    disablePadding: false,
+    label: "Order Summary",
+  },
+  { id: "total", numeric: true, disablePadding: false, label: "Invoice Total" },
+  { id: "email", numeric: true, disablePadding: false, label: "Client Email" },
 ];
-
-//need payments sql database
-//need to add order_summary to table/view
-//do use effect for these
-//make an object and for each object, return
-// const headCells = [
-//   {
-//     id: `${invoice.id}`,
-//     numeric: false,
-//     disablePadding: true,
-//     label: "Invoice ID",
-//   },
-//   { id: `${invoice.bill_to}`, numeric: false, disablePadding: false, label: "Customer" },
-//   { id: `${invoice.order_summary}`, numeric: false, disablePadding: false, label: "Order Summary" },
-//   { id: "carbs", numeric: true, disablePadding: false, label: "Carbs (g)" },
-//   { id: "protein", numeric: true, disablePadding: false, label: "Protein (g)" },
-// ];
 
 function InvoiceTableHead(props) {
   const {
@@ -205,16 +176,23 @@ const InvoiceTableToolbar = (props) => {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Invoices
         </Typography>
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Tooltip title="Edit Invoice">
+            <IconButton aria-label="edit">
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : (
         <Tooltip title="Filter list">
           <IconButton aria-label="filter list">
@@ -254,34 +232,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function InvoiceTable({ signedIn, setSignedIn }) {
-  const classes = useStyles();
+export default function InvoiceTableData({ signedIn, setSignedIn, refresh }) {
+  const [userInfo, setUserInfo] = useState(undefined);
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [invoiceTableInfo, setInvoiceTableInfo] = React.useState(undefined);
+  const [invoiceTableInfo, setInvoiceTableInfo] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     (async function () {
       try {
         const token = signedIn.signInUserSession.idToken.jwtToken;
-        const response = await axios.post(
-          "http://localhost:4000/invoice-table-data",
-          {
-            token,
-          }
-        );
-        setInvoiceTableInfo(response.data);
+        const response = await axios.post("http://localhost:4000/user", {
+          token,
+        });
+        setUserInfo(response.data);
+        console.log(response);
+        invoiceData(token);
+
         // console.log("this is the response", response);
         // console.log('current user log', currentUser);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, [invoiceTableInfo]);
+  }, [refresh]);
+
+  async function invoiceData(token) {
+    const response = await axios.post(
+      "http://localhost:4000/invoice-table-data",
+      {
+        token,
+      }
+    );
+    console.log(response);
+    setInvoiceTableInfo(response.data);
+    // console.log("this is the response", response);
+    // console.log('current user log', currentUser);
+  }
+  //   function (data) {
+  //       return { }
+  console.log("THE INVOICE INFO IS", invoiceTableInfo);
+
+  //   const rows = invoiceTableInfo.map(
+  //     (invoice) => (
+  //       invoice.InvoiceNumber,
+  //       invoice.bill_to,
+  //       invoice.todays_date,
+  //       invoice.item_description,
+  //       invoice.InvoiceTotal,
+  //       invoice.email
+  //     )
+  //   );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -291,7 +296,7 @@ export default function InvoiceTable({ signedIn, setSignedIn }) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = invoiceTableInfo.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -334,7 +339,10 @@ export default function InvoiceTable({ signedIn, setSignedIn }) {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    rowsPerPage -
+    Math.min(rowsPerPage, invoiceTableInfo.length - page * rowsPerPage);
+
+  const classes = useStyles();
 
   return (
     <div className={classes.root}>
@@ -354,23 +362,23 @@ export default function InvoiceTable({ signedIn, setSignedIn }) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={invoiceTableInfo.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(invoiceTableInfo, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.InvoiceNumber);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.InvoiceNumber)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.InvoiceNumber}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -385,12 +393,17 @@ export default function InvoiceTable({ signedIn, setSignedIn }) {
                         scope="row"
                         padding="none"
                       >
-                        {row.name}
+                        {row.InvoiceNumber}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.bill_to}</TableCell>
+                      <TableCell align="right">{row.todays_date}</TableCell>
+                      <TableCell align="right">
+                        {row.item_description}
+                      </TableCell>
+                      <TableCell align="right">
+                        {d3.format("($.2f")(row.InvoiceTotal)}
+                      </TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -399,13 +412,27 @@ export default function InvoiceTable({ signedIn, setSignedIn }) {
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
+
+              {/* //   {invoiceTableInfo &&
+            //     invoiceTableInfo.map((row) => (
+            //       <TableRow key={row.InvoiceNumber}>
+            //         <TableCell component="th" scope="row">
+            //           {row.InvoiceNumber}
+            //         </TableCell>
+            //         <TableCell align="right">{row.bill_to}</TableCell>
+            //         <TableCell align="right">{row.todays_date}</TableCell>
+            //         <TableCell align="right">{row.item_description}</TableCell>
+            //         <TableCell align="right">{row.InvoiceTotal}</TableCell>
+            //         <TableCell align="right">{row.email}</TableCell>
+            //       </TableRow>
+            //     ))} */}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={invoiceTableInfo.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

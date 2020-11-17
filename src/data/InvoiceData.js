@@ -46,6 +46,7 @@ export default function InvoiceData({ signedIn, invoiceUuId, clientId }) {
           }
         );
         setInvoiceInfo(currentInvoice.data);
+        console.log(invoiceInfo);
       } catch (error) {
         console.log(error);
       }
@@ -98,6 +99,7 @@ export default function InvoiceData({ signedIn, invoiceUuId, clientId }) {
     <div>
       {userInfo && customerInfo && invoiceInfo && orderInfo && (
         <Invoice
+          signedIn={signedIn}
           userInfo={userInfo}
           customerInfo={customerInfo}
           invoiceInfo={invoiceInfo}
